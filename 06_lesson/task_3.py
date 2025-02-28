@@ -18,14 +18,3 @@ find = driver.find_element(By.CSS_SELECTOR, '#award')
 print(find.get_attribute('src'))
 
 driver.quit()
-
-'''неявное ожидание
-
-driver.implicitly_wait(10)
-
-third = driver.find_element(By.CSS_SELECTOR, "#award").get_attribute("src")
-
-print(third)
-
-driver.quit()
-'''
