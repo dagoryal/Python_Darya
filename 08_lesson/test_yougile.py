@@ -6,38 +6,42 @@ def test_key():
     key = api.get_token()
     return key
 
-def test_add_project():
-    title = "New project123"
+def test_add_project(): #Создание проекта
+    title = "New project"
     result = api.create_project(title)
-    return result["id"]
+    pr_id = result["id"]
+    assert result["id"] == pr_id
 
-def test_update():
-    old_tit = api.create_project("UpdateMe")
+def test_update(): #Изменение проекта
+    title = "UpdateMe"
+    old_tit = api.create_project(title)
+    title_id = old_tit["id"]
     new_tit = "Updated"
-    updated = api.edit_project(old_tit, new_tit)
-    return updated
+    updated = api.edit_project(title_id, new_tit)
+    assert updated["id"] == title_id
 
-def test_project_id():
+def test_project_id(): #Получить по айди
     title = "From id"
     res = api.create_project(title)
-    self_id = res
+    self_id = res["id"]
     new_project = api.get_project(self_id)
-    return new_project
+    assert new_project ["title"] == title
 
 def test_add_negative_project():
     title = ""
-    result = api.create_project(title)
-    return result
+    proj = api.create_project(title)
+    res = proj['message']
+    assert res == ['title should not be empty']
 
 def test_negative_update():
-    old_tit = api.create_project("")
-    new_tit = "Updated"
-    updated = api.edit_project(old_tit, new_tit)
-    return updated
+    old_tit = api.create_project("Updatemepls")
+    title_id = old_tit['id']
+    new_tit = ""
+    updated = api.edit_project(title_id, new_tit)
+    error_message = updated['message']
+    assert error_message == ['title should not be empty']
 
-def test_neg_project_id():
-    title = "From id"
-    res = api.create_project(title=None)
-    self_id = res
-    new_project = api.get_project(self_id)
-    return new_project
+def test_neg_project_bez_id():
+    new_project = api.get_project(None)
+    none_project = new_project['message']
+    assert none_project == 'Проект не найден'
