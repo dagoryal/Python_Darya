@@ -5,7 +5,7 @@ db = DbTable("postgresql://postgres:1234@localhost:5432/QA")
 
 def test_get_subject():
     res = db.get_subject()
-    assert len(res) is not None
+    assert isinstance(res, list)
 
 def test_create_subject():
     summ = db.get_subject()
@@ -27,15 +27,15 @@ def test_create_subject():
 def test_edit():
     subject_title = "qa"
     subject_id = randint(16, 100)
-    db.create(subject_title, subject_id)
+    new = db.create(subject_title, subject_id)
+    prj = new["subject_id"]
 
     new_name = "updated"
-    db.edit(new_name, subject_id)
-    sub = db.select_by_id(subject_id)
+    edited = db.edit(new_name, prj)
 
-    db.delete(sub)
-    assert sub == subject_id
-    assert new_name == "updated"
+    db.delete(prj)
+    assert edited["subject_title"] == new_name
+    assert edited['subject_id'] == prj
 
 def test_delete_subject():
     db.create('delete_me', 888)

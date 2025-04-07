@@ -25,7 +25,11 @@ class DbTable:
 
             connection.execute(self.__scripts["new sub"], {"title": s_title, "id": s_id})
             transaction.commit()
+            res = connection.execute(self.__scripts["select"])
+            rows = res.mappings().fetchall()[-1]
+
             connection.close()
+            return rows
 
     def get_max_id(self):
         with self.db.connect() as connection:
@@ -45,8 +49,15 @@ class DbTable:
 
             connection.execute(self.__scripts["update"], {"new_title": s_title, "id": s_id})
             transaction.commit()
+            res = connection.execute(self.__scripts["by id"], {"main_id": s_id})
+            row = res.mappings().fetchone()
+
             connection.close()
+            return row
+
 
     def select_by_id(self, s_id):
         with self.db.connect() as connection:
-            return connection.execute(self.__scripts["by id"], {"main_id": s_id}).fetchall()[0][0]
+            res = connection.execute(self.__scripts["by id"], {"main_id": s_id})
+            row = res.mappings().fetchone()
+            return row
