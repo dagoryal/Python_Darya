@@ -17,7 +17,9 @@ def test_calc():
         calc.delay('45')
 
     calc.calculator()
-    res = calc.result()
+
+    with allure.step("Дождаться окончания задержки. Получить результат"):
+        res = calc.result()
 
     with allure.step("Проверить, что в окне отобразился корректный результат через 45 секунд"):
         assert res == '15'
