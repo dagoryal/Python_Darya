@@ -1,5 +1,7 @@
 pytest~=8.3.5
-selenium==4.29.0
+selenium~=4.28.1
 sqlalchemy==2.0.40
 webdriver-manager~=4.0.2
 requests~=2.32.3
+
+allure-python-commons~=2.14.0
